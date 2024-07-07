@@ -10,6 +10,7 @@ type Form2Props = {
 export function Form2({ onPrevious }: Form2Props) {
   const { handleChange, errors, touched, handleBlur, values } =
     useFormikContext<Form2Schema>();
+  console.log({ values });
 
   return (
     <div className={styles.container}>
