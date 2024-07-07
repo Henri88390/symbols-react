@@ -6,18 +6,21 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  TextField,
 } from "@mui/material";
 import { useFormikContext } from "formik";
+import { useState } from "react";
+import { Form1Modal } from "../modals/Form1Modal";
 import { Gender, ManJob, WomanJob } from "../models/Gender";
 import styles from "./Form1.module.scss";
 import { Form1Schema } from "./FormsSchema";
 
 export function Form1() {
+  const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
   const { handleChange, errors, touched, setFieldValue, resetForm, values } =
     useFormikContext<Form1Schema>();
 
   function handleGenderCHange<T>(event: SelectChangeEvent<T>) {
-    resetForm();
     setFieldValue("gender", event.target.value);
     setFieldValue("job", "");
   }
@@ -46,6 +49,14 @@ export function Form1() {
     label: value,
     value,
   }));
+
+  function closeModal() {
+    setIsOpenModal(false);
+  }
+
+  function openModal() {
+    setIsOpenModal(true);
+  }
 
   return (
     <div className={styles.container}>
@@ -90,12 +101,7 @@ export function Form1() {
             onChange={handleChange}
             error={touched.job && Boolean(errors.job)}
           >
-            {allJobOptions.map((option, index) => (
-              <MenuItem value={option.value} key={index}>
-                {option.label}
-              </MenuItem>
-            ))}
-            {/* {values.gender === Gender.Female &&
+            {values.gender === Gender.Female &&
               femaleJobOptions.map((option, index) => (
                 <MenuItem value={option.value} key={index}>
                   {option.label}
@@ -107,7 +113,7 @@ export function Form1() {
                 <MenuItem value={option.value} key={index}>
                   {option.label}
                 </MenuItem>
-              ))} */}
+              ))}
           </Select>
           <div className={styles.formHelperText}>
             {touched.job && errors.job && (
@@ -117,7 +123,7 @@ export function Form1() {
         </FormControl>
       )}
 
-      {/* <TextField
+      <TextField
         fullWidth
         name="email"
         label="Email"
@@ -125,8 +131,8 @@ export function Form1() {
         onChange={handleChange}
         error={touched.email && Boolean(errors.email)}
         helperText={touched.email && errors.email}
-      /> */}
-      {/* <TextField
+      />
+      <TextField
         fullWidth
         name="password"
         label="Password"
@@ -135,23 +141,35 @@ export function Form1() {
         onChange={handleChange}
         error={touched.password && Boolean(errors.password)}
         helperText={touched.password && errors.password}
-      /> */}
-      {/* <TextField
+      />
+      <TextField
         fullWidth
         name="passwordConfirmation"
         label="Confirm password"
         type="password"
         value={values.passwordConfirmation}
         onChange={handleChange}
-        onBlur={handleBlur}
         error={
           touched.passwordConfirmation && Boolean(errors.passwordConfirmation)
         }
         helperText={touched.passwordConfirmation && errors.passwordConfirmation}
-      /> */}
+      />
+
+      <Button onClick={openModal}>Open modal</Button>
+      {isModalOpen && (
+        <Form1Modal isOpen={isModalOpen} closeModal={closeModal} />
+      )}
       <Button color="primary" variant="contained" fullWidth type="submit">
         Next
       </Button>
+      <div>
+        {touched.age && errors.age && (
+          <FormHelperText error>{String(errors.age)}</FormHelperText>
+        )}
+        {touched.petName && errors.petName && (
+          <FormHelperText error>{String(errors.petName)}</FormHelperText>
+        )}
+      </div>
     </div>
   );
 }

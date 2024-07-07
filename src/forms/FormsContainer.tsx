@@ -6,8 +6,18 @@ import { FormsSchema, form1Schema, form2Schema } from "./FormsSchema";
 
 export function FormsContainer() {
   const initialValues: FormsSchema = {
+    //form 1
     gender: "",
     job: "",
+    password: "",
+    passwordConfirmation: "",
+
+    //form 1 modal
+    petName: "",
+    age: "",
+
+    //form 2
+    email: "",
     firstName: "",
     lastName: "",
   };
